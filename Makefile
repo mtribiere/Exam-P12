@@ -1,6 +1,6 @@
-all: exo
+all: prog
 
-exo: main.o fonctions.o
+prog: main.o fonctions.o
 	gcc -o $@ main.o fonctions.o
 
 main.o: main.c fonctions.h
@@ -9,9 +9,9 @@ main.o: main.c fonctions.h
 fonctions.o: fonctions.c
 	gcc -Wall -o fonctions.o -c $^
 
-run : exo
+test : prog
 	@echo "*** TESTING : ***\n"
-	./exo
-	
+	./prog
+
 clean:
 	rm -r *.o
