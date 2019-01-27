@@ -8,11 +8,11 @@ $> make
 
 ## Run
 ``
-$> make run
+$> make test
 ``  
 or  
 ``
-$> ./exo
+$> ./prog
 ``
 
 ## Author
