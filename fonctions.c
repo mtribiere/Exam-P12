@@ -152,3 +152,87 @@ int Remplacer_chiffre(char *sourceText,char *destinationText){
   destinationText[indexDest] = '\0';
   return indexDest;
 }
+
+int Analyser_chaine(char *sourceText,Mot **words){
+  int indexSource = 0;
+  int counter = 0;
+
+  //Tant que la chaine n'est pas fini
+  while(sourceText[indexSource] != '\0'){
+    //Determier la taille du mot
+    int wordSize = 0;
+    while(sourceText[indexSource+wordSize] != ' ' && sourceText[indexSource+wordSize] != ',' && sourceText[indexSource+wordSize] != '.')
+      wordSize++;
+
+    //Isoler le mot
+    char *currentWord = malloc(sizeof(char)*(wordSize+1));
+    int i = 0;
+    while(i<wordSize){
+      currentWord[i] = sourceText[indexSource+i];
+      i++;
+    }
+    currentWord[i] = '\0';
+
+    //Chercher le mot dans la liste chainée
+    int found = 0;
+    Mot *currentPointer = *words;
+
+    //Tant que on a pas atteient la fin de la liste ou que on a trouvé le mot
+    while(currentPointer != NULL && found == 0){
+      //Si on trouve le mot dans la liste
+      if(strcmp(currentPointer->texte,currentWord) == 0){
+        found = 1;
+        (currentPointer->nombre)++;
+      }
+
+      //Avancer dans la liste
+      currentPointer = currentPointer->suivant;
+    }
+
+    //Si le mot n'a pas été trouvé
+    if(found == 0){
+      //Insertion tête
+      Mot *toInsert = malloc(sizeof(Mot));
+      strcpy(toInsert->texte,currentWord);
+      toInsert->nombre = 1;
+
+      toInsert->suivant = *words;
+      *words = toInsert;
+    }
+
+    free(currentWord);
+    indexSource += (wordSize+1);
+  }
+
+  return counter;
+}
+
+void libererChaine(Mot *words){
+  Mot *currentToFree = words;
+  Mot *currentNext;
+  //Si la chaine n'est pas vide
+  if(currentToFree != NULL){
+      currentNext = words->suivant;
+      //Tant que l'on a pas atteient la fin
+      while(currentToFree != NULL){
+        //Liberer l'emplacement
+        free(currentToFree);
+
+        //Avancer si possible
+        currentToFree = currentNext;
+        if(currentNext != NULL){
+          currentNext = currentNext->suivant;
+        }
+      }
+    }
+  }
+
+
+/* DEBUG */
+void afficherListe(Mot *words){
+  Mot *currentPointer = words;
+  while(currentPointer != NULL){
+    printf("%s -> %d\n",currentPointer->texte,currentPointer->nombre);
+    currentPointer = currentPointer->suivant;
+  }
+}

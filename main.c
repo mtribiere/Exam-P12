@@ -1,13 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "fonctions.h"
 
 int main(){
-  char text[] = "J'ai 2 voitures et 4 chiens";
-  char *text2 = malloc(sizeof(char)*500);
+  char text[] = "I walk a lonely road.The only one that I have ever known.";
+  Mot *words = NULL;
 
-  Remplacer_chiffre(text,text2);
-  printf("%s -> %s\n",text,text2);
+  Analyser_chaine(text,&words);
 
-  free(text2);
+  afficherListe(words);
+
+  libererChaine(words);
+
 }
